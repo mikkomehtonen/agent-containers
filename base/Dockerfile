@@ -2,6 +2,7 @@ FROM node:23-slim
 
 ARG HOST_UID=1000
 ARG HOST_GID=1000
+ARG TARGETARCH
 # Combine all tools here. Note: added specific tools you listed for runtime
 ARG LOCAL_TOOLS="git curl jq ripgrep vim nano make zip unzip ssh-client wget tree imagemagick ca-certificates gnupg procps"
 
@@ -21,7 +22,15 @@ COPY bin/tod /usr/local/bin/tod
 RUN chmod +x /usr/local/bin/tod
 
 # Install Playwright system dependencies for Chromium (required by agent-browser)
-RUN npx playwright install-deps chromium
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+      apt-get update && \
+      apt-get install -y --no-install-recommends chromium chromium-sandbox && \
+      rm -rf /var/lib/apt/lists/*; \
+    else \
+      npx playwright install-deps chromium; \
+    fi
+
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD_ARM64=1
 
 # Corepack
 RUN corepack enable
@@ -52,7 +61,10 @@ RUN mkdir -p /home/node/.npm-global && \
 # 5. Install agent-browser (headless browser automation CLI for AI agents)
 # Downloads Chromium browser to user's cache
 RUN npm install -g agent-browser && \
-  agent-browser install
+    if [ "$TARGETARCH" != "arm64" ]; then agent-browser install; fi
+
+# Set executable path for runtime (only matters on ARM, harmless on x86 if unset)
+ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 # 6. Bash Configuration
 # Add the path export to bashrc so interactive shells pick it up
