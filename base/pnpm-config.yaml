@@ -3,7 +3,3 @@
 # Don't auto-run "pnpm install" before scripts; host/container installs
 # differ, which would trigger a purge/reinstall on every run.
 verifyDepsBeforeRun: false
-
-# No TTY confirmation prompt on explicit installs (agent-spawned shells
-# have no TTY; pnpm aborts otherwise).
-confirmModulesPurge: false
