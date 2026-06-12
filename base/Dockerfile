@@ -1,4 +1,4 @@
-FROM node:23-slim
+FROM node:26-slim
 
 ARG HOST_UID=1000
 ARG HOST_GID=1000
@@ -37,8 +37,8 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
 
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD_ARM64=1
 
-# Corepack
-RUN corepack enable
+# Corepack (no longer bundled with Node since v25, install manually)
+RUN npm install -g corepack && corepack enable
 
 # 2. Configure the existing 'node' user
 # The node image usually creates the node user. We ensure it owns the app dir.
@@ -75,8 +75,10 @@ ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 # Add the path export to bashrc so interactive shells pick it up
 RUN echo "export PATH=${NPM_CONFIG_PREFIX}/bin:${BUN_INSTALL}/bin:\$PATH" >> /home/node/.bashrc
 
-# 7. Copy aliases to the 'node' user's home
+# 7. Copy config files to the 'node' user's home
 COPY --chown=node:node ./.bash_aliases /home/node/.bash_aliases
+# Global pnpm config (see pnpm-config.yaml for rationale)
+COPY --chown=node:node ./pnpm-config.yaml /home/node/.config/pnpm/config.yaml
 RUN echo "if [ -f ~/.bash_aliases ]; then . ~/.bash_aliases; fi" >> /home/node/.bashrc
 
 CMD ["/bin/bash"]
