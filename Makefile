@@ -1,4 +1,4 @@
-.PHONY: all clean deep-clean base claude-code openai-codex
+.PHONY: all clean deep-clean base claude-code openai-codex open-code
 
 # Determine container engine (podman or docker)
 CONTAINER_ENGINE := $(shell which podman 2>/dev/null || which docker 2>/dev/null)
