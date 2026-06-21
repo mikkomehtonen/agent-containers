@@ -3,7 +3,6 @@ FROM agent-base AS builder
 
 # 1. Install global modules
 RUN npm install -g opencode-ai && \
-  npm install -g @anthropic-ai/claude-code && \
   echo "Installed Open Code version: $(opencode --version)"
 
 # Runtime stage
