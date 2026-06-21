@@ -4,7 +4,7 @@ ARG HOST_UID=1000
 ARG HOST_GID=1000
 ARG TARGETARCH
 # Combine all tools here. Note: added specific tools you listed for runtime
-ARG LOCAL_TOOLS="git curl jq ripgrep vim nano make zip unzip ssh-client wget tree imagemagick ca-certificates gnupg procps build-essential python3"
+ARG LOCAL_TOOLS="git curl jq ripgrep vim nano make zip unzip ssh-client wget tree imagemagick ca-certificates gnupg procps build-essential python3 golang"
 
 # 1. Install System Dependencies (as root)
 RUN apt-get update && \
