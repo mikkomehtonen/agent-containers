@@ -5,7 +5,7 @@ FROM agent-base AS builder
 RUN npm install -g opencode-ai && \
   echo "Installed Open Code version: $(opencode --version)"
 
-RUN npm install -g peck-cli
+RUN npm install -g git+https://github.com/mikkomehtonen/peck.git#d71bfa2
 
 # Runtime stage
 FROM agent-base
