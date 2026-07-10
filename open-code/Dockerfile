@@ -1,8 +1,12 @@
+ARG OPENCODE_VERSION=1.17.9
+
 # Build stage
 FROM agent-base AS builder
 
+ARG OPENCODE_VERSION
+
 # 1. Install global modules
-RUN npm install -g opencode-ai && \
+RUN npm install -g opencode-ai@${OPENCODE_VERSION} && \
   echo "Installed Open Code version: $(opencode --version)"
 
 RUN git clone --depth 1 --branch v0.3.0 https://github.com/mikkomehtonen/peck.git /tmp/peck && \
