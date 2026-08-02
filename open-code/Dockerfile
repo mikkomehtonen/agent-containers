@@ -1,4 +1,4 @@
-ARG OPENCODE_VERSION=1.17.9
+ARG OPENCODE_VERSION=1.18.4
 
 # Build stage
 FROM agent-base AS builder
@@ -9,7 +9,7 @@ ARG OPENCODE_VERSION
 RUN npm install -g opencode-ai@${OPENCODE_VERSION} && \
   echo "Installed Open Code version: $(opencode --version)"
 
-RUN git clone --depth 1 --branch v0.3.0 https://github.com/mikkomehtonen/peck.git /tmp/peck && \
+RUN git clone --depth 1 --branch v0.3.1 https://github.com/mikkomehtonen/peck.git /tmp/peck && \
     cd /tmp/peck && \
     npm ci && \
     npm run build && \
@@ -26,6 +26,11 @@ COPY --from=builder --chown=node:node /home/node/.npm-global /home/node/.npm-glo
 
 USER root
 RUN ln -sf /home/node/.npm-global/bin/peck /usr/local/bin/peck
+
+ENV PIPX_HOME="/opt/pipx"
+ENV PIPX_BIN_DIR="/usr/local/bin"
+RUN pipx install graphifyy
+
 USER node
 
 # Display version information
