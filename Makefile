@@ -11,6 +11,7 @@ HOST_GID := $(shell id -g)
 LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang"
 
 OPENCODE_VERSION ?= 1.18.19
+PECK_VERSION ?= 0.3.3
 OPENCODE_CANDIDATE_VERSION ?= latest
 
 # Ensure we have a container engine
@@ -48,6 +49,7 @@ open-code: base
 	$(CONTAINER_ENGINE) build \
 		--no-cache \
 		--build-arg OPENCODE_VERSION=$(OPENCODE_VERSION) \
+		--build-arg PECK_VERSION=${PECK_VERSION} \
 		-t open-code \
 		-f open-code/Dockerfile open-code
 
@@ -56,6 +58,7 @@ open-code-candidate: base
 	$(CONTAINER_ENGINE) build \
 		--no-cache \
 		--build-arg OPENCODE_VERSION=$(OPENCODE_CANDIDATE_VERSION) \
+		--build-arg PECK_VERSION=${PECK_VERSION} \
 		-t open-code:candidate \
 		-f open-code/Dockerfile open-code
 
