@@ -10,7 +10,7 @@ HOST_GID := $(shell id -g)
 # Tools to install in to the containers with apt-get
 LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang"
 
-OPENCODE_VERSION ?= 1.18.11
+OPENCODE_VERSION ?= 1.18.19
 OPENCODE_CANDIDATE_VERSION ?= latest
 
 # Ensure we have a container engine
@@ -40,7 +40,6 @@ openai-codex: base
 	@echo "Building openai-codex"
 	$(CONTAINER_ENGINE) build \
 		--no-cache \
-		--build-arg OPENCODE_VERSION=$(OPENCODE_VERSION) \
 		-t openai-codex \
 		-f openai-codex/Dockerfile openai-codex
 
@@ -48,6 +47,7 @@ open-code: base
 	@echo "Building open-code"
 	$(CONTAINER_ENGINE) build \
 		--no-cache \
+		--build-arg OPENCODE_VERSION=$(OPENCODE_VERSION) \
 		-t open-code \
 		-f open-code/Dockerfile open-code
 
