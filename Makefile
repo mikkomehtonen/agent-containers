@@ -10,8 +10,8 @@ HOST_GID := $(shell id -g)
 # Tools to install in to the containers with apt-get
 LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang"
 
-OPENCODE_VERSION ?= 1.18.19
-PECK_VERSION ?= 0.3.3
+OPENCODE_VERSION ?= 1.18.21
+PECK_VERSION ?= 0.3.4
 OPENCODE_CANDIDATE_VERSION ?= latest
 
 # Ensure we have a container engine
