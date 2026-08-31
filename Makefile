@@ -3,9 +3,14 @@
 # Determine container engine (podman or docker)
 CONTAINER_ENGINE := $(shell which podman 2>/dev/null || which docker 2>/dev/null)
 
-# UID/GID
-HOST_UID := $(shell id -u)
-HOST_GID := $(shell id -g)
+# Base image target: the base Dockerfile has per-architecture final stages
+# (base-amd64 / base-arm64), pick the one matching the build host
+HOST_ARCH := $(shell uname -m)
+ifeq ($(HOST_ARCH),aarch64)
+  BASE_TARGET := base-arm64
+else
+  BASE_TARGET := base-amd64
+endif
 
 # Tools to install in to the containers with apt-get
 LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang"
@@ -22,10 +27,9 @@ endif
 all: base claude-code openai-codex
 
 base:
-	@echo "Building base image"
+	@echo "Building base image ($(BASE_TARGET))"
 	$(CONTAINER_ENGINE) build \
-		--build-arg HOST_UID=$(HOST_UID) \
-		--build-arg HOST_GID=$(HOST_GID) \
+		--target=$(BASE_TARGET) \
 		--build-arg LOCAL_TOOLS=$(LOCAL_TOOLS) \
 		-t agent-base \
 		-f base/Dockerfile base
@@ -72,3 +76,7 @@ clean:
 			echo "Image $$image does not exist, skipping"; \
 		fi; \
 	done
+
+deep-clean: clean
+	@echo "Pruning container build cache"
+	-$(CONTAINER_ENGINE) build prune --force
