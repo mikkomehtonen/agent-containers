@@ -39,6 +39,9 @@ RUN npx playwright install-deps chromium && \
 # Corepack (no longer bundled with Node since v25, install manually)
 RUN npm install -g corepack && corepack enable
 
+# minify/clean exported SVG
+RUN npm i -g svgo
+
 # 2. Configure the existing 'node' user
 # The node image usually creates the node user. We ensure it owns the app dir.
 WORKDIR /app

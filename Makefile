@@ -13,10 +13,10 @@ else
 endif
 
 # Tools to install in to the containers with apt-get
-LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang"
+LOCAL_TOOLS := "git curl jq ripgrep joe nano make zip unzip ssh-client wget tree imagemagick build-essential python3 python3-pip python3-venv python-is-python3 pipx golang resvg librsvg2-bin chafa libxml2-utils python3-pil python3-numpy pngcheck optipng shellcheck shfmt shellcheck shfmt fd-find moreutils hyperfine units sqlite3 yq lsof bind9-dnsutils iputils-ping iproute2"
 
-OPENCODE_VERSION ?= 1.18.21
-PECK_VERSION ?= 0.3.4
+OPENCODE_VERSION ?= 1.18.33
+PECK_VERSION ?= 0.3.6
 OPENCODE_CANDIDATE_VERSION ?= latest
 
 # Ensure we have a container engine
