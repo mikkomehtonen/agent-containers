@@ -33,6 +33,9 @@ ENV PIPX_HOME="/opt/pipx"
 ENV PIPX_BIN_DIR="/usr/local/bin"
 RUN pipx install graphifyy
 
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+
 USER node
 
 # Display version information
